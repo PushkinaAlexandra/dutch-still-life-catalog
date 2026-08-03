@@ -32,4 +32,4 @@ An interactive digital catalog of 12 Dutch Golden Age still life paintings from 
 4. Open `index.html` in your browser.
 
 ## 📝 Author
-**Alexandra Pushkina** — [LinkedIn](www.linkedin.com/in/александра-пушкина-141774319)
+**Alexandra Pushkina** 
