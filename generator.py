@@ -46,22 +46,16 @@ if not genres:
     genres = ['All']
 
 
-# --- PARSE YEARS FOR TIMELINE (UPDATED) ---
+# --- PARSE YEARS FOR TIMELINE ---
 def extract_year(date_str):
-    """Extract a year from various date formats."""
     if not date_str:
         return None
-
-    # First try to find a 4-digit number (e.g., "1659", "1628")
     match = re.search(r'\b(16\d{2}|17\d{2})\b', date_str)
     if match:
         return int(match.group(1))
-
-    # Try to find a pattern like "1650s" or "1650s" with spaces
     match = re.search(r'(16\d{2}|17\d{2})\s*s', date_str)
     if match:
         return int(match.group(1))
-
     return None
 
 
@@ -103,8 +97,9 @@ for item in items:
     image = item.get('Image', '').replace("'", "\\'").replace('"', '\\"')
     genre = item.get('Genre', 'Uncategorized').replace("'", "\\'").replace('"', '\\"')
     tags = item.get('Tags', '').replace("'", "\\'").replace('"', '\\"')
+    hotspots = item.get('Hotspots', '').replace("'", "\\'").replace('"', '\\"')
     js_items.append(
-        f"{{title:'{title}',artist:'{artist}',year:'{year}',desc:'{desc}',image:'{image}',genre:'{genre}',tags:'{tags}'}}")
+        f"{{title:'{title}',artist:'{artist}',year:'{year}',desc:'{desc}',image:'{image}',genre:'{genre}',tags:'{tags}',hotspots:'{hotspots}'}}")
 
 js_data = '[' + ','.join(js_items) + ']'
 
@@ -163,12 +158,96 @@ html_content = f"""<!DOCTYPE html>
         .card-tag {{ font-size: 0.6rem; background: #f5f0ea; padding: 1px 8px; border-radius: 12px; color: #6b5f4f; }}
         .footer {{ text-align: center; margin-top: 40px; font-size: 0.8rem; color: #8c7d6b; border-top: 1px solid #ddd; padding-top: 20px; }}
 
+        /* --- MODAL --- */
         .modal {{ display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.92); }}
         .modal.open {{ display: flex; align-items: center; justify-content: center; }}
         .modal-content {{ max-width: 90%; max-height: 90%; display: flex; flex-direction: column; align-items: center; position: relative; }}
+
+        .modal-image-wrapper {{ position: relative; display: inline-block; max-width: 100%; max-height: 80vh; }}
         .modal-image-container {{ width: 100%; max-height: 80vh; overflow: hidden; display: flex; align-items: center; justify-content: center; position: relative; cursor: grab; background: transparent; }}
         .modal-image-container:active {{ cursor: grabbing; }}
         .modal-image-container img {{ max-width: 100%; max-height: 80vh; object-fit: contain; user-select: none; -webkit-user-drag: none; }}
+
+        /* --- HOTSPOTS --- */
+        .hotspot-container {{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 5;
+        }}
+        .hotspot {{
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            background: rgba(255, 215, 0, 0.8);
+            border: 2px solid white;
+            border-radius: 50%;
+            cursor: pointer;
+            pointer-events: auto;
+            transform: translate(-50%, -50%);
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+            animation: pulse 2s ease-in-out infinite;
+        }}
+        .hotspot:hover {{
+            background: rgba(255, 215, 0, 1);
+            transform: translate(-50%, -50%) scale(1.3);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+        }}
+        @keyframes pulse {{
+            0% {{ box-shadow: 0 0 10px rgba(255, 215, 0, 0.4); }}
+            50% {{ box-shadow: 0 0 25px rgba(255, 215, 0, 0.8); }}
+            100% {{ box-shadow: 0 0 10px rgba(255, 215, 0, 0.4); }}
+        }}
+        .hotspot-tooltip {{
+            position: fixed;
+            background: rgba(0, 0, 0, 0.85);
+            color: white;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            max-width: 260px;
+            pointer-events: none;
+            z-index: 2000;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            backdrop-filter: blur(4px);
+            line-height: 1.4;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            transform: translateY(-10px);
+        }}
+        .hotspot-tooltip.visible {{
+            opacity: 1;
+            transform: translateY(0);
+        }}
+        .hotspot-tooltip strong {{
+            color: #ffd700;
+            display: block;
+            margin-bottom: 4px;
+        }}
+        .hotspot-toggle {{
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            background: rgba(255, 215, 0, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 215, 0, 0.4);
+            padding: 6px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+            pointer-events: auto;
+        }}
+        .hotspot-toggle:hover {{
+            background: rgba(255, 215, 0, 0.3);
+        }}
+
         .modal-close {{ position: absolute; top: 20px; right: 30px; color: white; font-size: 2.5rem; font-weight: 300; cursor: pointer; transition: 0.3s; z-index: 10; background: none; border: none; }}
         .modal-close:hover {{ color: #d4c9b8; transform: scale(1.1); }}
         .modal-nav {{ position: absolute; top: 50%; transform: translateY(-50%); color: white; font-size: 3rem; cursor: pointer; background: rgba(0,0,0,0.3); padding: 10px 16px; border-radius: 50%; transition: 0.3s; z-index: 10; border: none; user-select: none; }}
@@ -199,7 +278,6 @@ if decades:
         <div class="timeline" id="timeline">
     """
     for decade in decades:
-        # Check if any item falls in this decade (using the updated extract_year)
         has_items = any(extract_year(item.get('Object Date', '')) and decade <= extract_year(
             item.get('Object Date', '')) < decade + 10 for item in items)
         active_class = 'has-items' if has_items else ''
@@ -259,6 +337,7 @@ for idx, item in enumerate(items):
     img = item.get('Image', '')
     genre = item.get('Genre', 'Uncategorized')
     tags = item.get('Tags', '')
+    hotspots = item.get('Hotspots', '')
 
     tag_spans = ''
     if tags:
@@ -267,8 +346,10 @@ for idx, item in enumerate(items):
             if tag:
                 tag_spans += f'<span class="card-tag">{tag}</span>'
 
+    has_hotspots = 'true' if hotspots and hotspots.strip() else 'false'
+
     html_content += f"""
-        <div class="card" data-index="{idx}" data-genre="{genre}" data-search="{title.lower()} {artist.lower()}" data-year="{extract_year(year) or ''}" data-tags="{tags.lower()}">
+        <div class="card" data-index="{idx}" data-genre="{genre}" data-search="{title.lower()} {artist.lower()}" data-year="{extract_year(year) or ''}" data-tags="{tags.lower()}" data-has-hotspots="{has_hotspots}">
             <img src="{img}" alt="{title}" loading="lazy" onerror="this.src='https://via.placeholder.com/280x220/f0ede8/6b5f4f?text=No+Image'">
             <div class="card-content">
                 <p class="card-title">{title}</p>
@@ -277,6 +358,7 @@ for idx, item in enumerate(items):
                 <p class="card-desc">{desc}</p>
                 <span class="card-genre">{genre}</span>
                 <div class="card-tags">{tag_spans}</div>
+                {('<span style="font-size:0.6rem;color:#6b5f4f;margin-left:8px;">🔍 Interactive</span>' if has_hotspots == 'true' else '')}
             </div>
         </div>
     """
@@ -292,8 +374,12 @@ html_content += """
     <button class="modal-nav modal-prev" id="modalPrev">&#10094;</button>
     <button class="modal-nav modal-next" id="modalNext">&#10095;</button>
     <div class="modal-content">
-        <div class="modal-image-container" id="modalImageContainer">
-            <img id="modalImage" src="" alt="">
+        <div class="modal-image-wrapper" id="modalImageWrapper">
+            <div class="modal-image-container" id="modalImageContainer">
+                <img id="modalImage" src="" alt="">
+            </div>
+            <div class="hotspot-container" id="hotspotContainer"></div>
+            <button class="hotspot-toggle" id="hotspotToggle">💡 Show Symbols</button>
         </div>
         <div class="modal-info" id="modalInfo">
             <h2 id="modalTitle"></h2>
@@ -310,6 +396,12 @@ html_content += """
     <div class="modal-counter" id="modalCounter"></div>
 </div>
 
+<!-- ===== TOOLTIP ===== -->
+<div class="hotspot-tooltip" id="hotspotTooltip">
+    <strong id="tooltipTitle"></strong>
+    <span id="tooltipText"></span>
+</div>
+
 <script>
     const allItems = """ + js_data + """;
 
@@ -324,23 +416,27 @@ html_content += """
     let activeDecade = null;
     let activeTag = null;
     let activeGenre = 'all';
-
-    let imgNaturalW = 0, imgNaturalH = 0;
-    let containerW = 0, containerH = 0;
-    let imgDisplayW = 0, imgDisplayH = 0;
+    let hotspotsVisible = false;
 
     const modal = document.getElementById('modal');
     const modalImg = document.getElementById('modalImage');
     const modalContainer = document.getElementById('modalImageContainer');
+    const modalWrapper = document.getElementById('modalImageWrapper');
     const modalTitle = document.getElementById('modalTitle');
     const modalArtist = document.getElementById('modalArtist');
     const modalYear = document.getElementById('modalYear');
     const modalDesc = document.getElementById('modalDesc');
     const modalCounter = document.getElementById('modalCounter');
+    const hotspotContainer = document.getElementById('hotspotContainer');
+    const hotspotToggle = document.getElementById('hotspotToggle');
+    const tooltip = document.getElementById('hotspotTooltip');
+    const tooltipTitle = document.getElementById('tooltipTitle');
+    const tooltipText = document.getElementById('tooltipText');
 
     // --- UPDATE DIMENSIONS ---
     function updateDimensions() {
         const containerRect = modalContainer.getBoundingClientRect();
+        const imgRect = modalImg.getBoundingClientRect();
         containerW = containerRect.width;
         containerH = containerRect.height;
         imgNaturalW = modalImg.naturalWidth || 1;
@@ -350,6 +446,12 @@ html_content += """
         const fitRatio = Math.min(ratioX, ratioY);
         imgDisplayW = imgNaturalW * fitRatio;
         imgDisplayH = imgNaturalH * fitRatio;
+
+        // Store image position relative to container
+        imgOffsetX = imgRect.left - containerRect.left;
+        imgOffsetY = imgRect.top - containerRect.top;
+        imgRenderW = imgRect.width;
+        imgRenderH = imgRect.height;
     }
 
     // --- CLAMP POSITION ---
@@ -370,6 +472,9 @@ html_content += """
     // --- UPDATE TRANSFORM ---
     function updateTransform() {
         modalImg.style.transform = 'translate(' + translateX + 'px, ' + translateY + 'px) scale(' + scale + ')';
+        if (hotspotsVisible) {
+            renderHotspots();
+        }
     }
 
     // --- APPLY ZOOM ---
@@ -379,6 +484,106 @@ html_content += """
         clampPosition();
         updateTransform();
     }
+
+    // --- HOTSPOTS RENDERING (FIXED) ---
+    function renderHotspots() {
+        const item = allItems[currentFilteredItems[currentIndex]];
+        const hotspotsData = item.hotspots || '';
+        hotspotContainer.innerHTML = '';
+
+        if (!hotspotsData || !hotspotsVisible) {
+            return;
+        }
+
+        // Get current position of the image inside the container
+        const containerRect = modalContainer.getBoundingClientRect();
+        const imgRect = modalImg.getBoundingClientRect();
+
+        // Image position relative to container
+        const imgLeft = imgRect.left - containerRect.left;
+        const imgTop = imgRect.top - containerRect.top;
+
+        // Image display size
+        const imgW = imgRect.width;
+        const imgH = imgRect.height;
+
+        // Parse hotspots: format is "x,y,text|x,y,text"
+        const spots = hotspotsData.split('|');
+        spots.forEach(spot => {
+            const parts = spot.split(',');
+            if (parts.length >= 3) {
+                const x = parseFloat(parts[0]);
+                const y = parseFloat(parts[1]);
+                const text = parts.slice(2).join(',').trim();
+
+                // Calculate position in pixels within the container
+                const posX = imgLeft + (imgW * x / 100);
+                const posY = imgTop + (imgH * y / 100);
+
+                const dot = document.createElement('div');
+                dot.className = 'hotspot';
+                dot.style.left = posX + 'px';
+                dot.style.top = posY + 'px';
+
+                // Extract title (first word before colon)
+                const titleMatch = text.match(/^([^:]+):/);
+                const title = titleMatch ? titleMatch[1].trim() : 'Symbol';
+                const description = text.replace(/^[^:]+:\s*/, '');
+
+                dot.addEventListener('mouseenter', function(e) {
+                    showTooltip(e, title, description);
+                });
+                dot.addEventListener('mouseleave', function() {
+                    hideTooltip();
+                });
+                dot.addEventListener('mousemove', function(e) {
+                    moveTooltip(e);
+                });
+
+                hotspotContainer.appendChild(dot);
+            }
+        });
+    }
+
+    // --- TOOLTIP ---
+    let tooltipTimeout = null;
+
+    function showTooltip(e, title, text) {
+        clearTimeout(tooltipTimeout);
+        tooltipTitle.textContent = title;
+        tooltipText.textContent = text;
+        tooltip.classList.add('visible');
+        moveTooltip(e);
+    }
+
+    function hideTooltip() {
+        tooltipTimeout = setTimeout(function() {
+            tooltip.classList.remove('visible');
+        }, 100);
+    }
+
+    function moveTooltip(e) {
+        let x = e.clientX + 15;
+        let y = e.clientY - 10;
+        // Keep tooltip inside viewport
+        if (x + 280 > window.innerWidth) x = e.clientX - 280;
+        if (y + 100 > window.innerHeight) y = window.innerHeight - 100;
+        if (y < 10) y = 10;
+        tooltip.style.left = x + 'px';
+        tooltip.style.top = y + 'px';
+    }
+
+    // --- TOGGLE HOTSPOTS ---
+    hotspotToggle.addEventListener('click', function() {
+        hotspotsVisible = !hotspotsVisible;
+        this.textContent = hotspotsVisible ? '🔍 Hide Symbols' : '💡 Show Symbols';
+        if (hotspotsVisible) {
+            updateDimensions();
+            renderHotspots();
+        } else {
+            hotspotContainer.innerHTML = '';
+        }
+    });
 
     // --- MODAL ---
     function getVisibleItems() {
@@ -402,6 +607,10 @@ html_content += """
         showItem();
         modal.classList.add('open');
         document.body.style.overflow = 'hidden';
+        hotspotsVisible = false;
+        hotspotToggle.textContent = '💡 Show Symbols';
+        hotspotContainer.innerHTML = '';
+        hideTooltip();
     }
 
     function showItem() {
@@ -415,6 +624,9 @@ html_content += """
         scale = 1;
         translateX = 0;
         translateY = 0;
+        hotspotContainer.innerHTML = '';
+        hotspotsVisible = false;
+        hotspotToggle.textContent = '💡 Show Symbols';
         modalImg.onload = function() {
             updateDimensions();
             clampPosition();
@@ -424,12 +636,13 @@ html_content += """
             updateDimensions();
             clampPosition();
             updateTransform();
-        }, 100);
+        }, 150);
     }
 
     function closeModal() {
         modal.classList.remove('open');
         document.body.style.overflow = '';
+        hideTooltip();
     }
 
     function changeImage(direction) {
@@ -552,7 +765,7 @@ html_content += """
         });
     });
 
-    // --- TAG CLOUD ---
+    // --- TAG CLOUD (initial) ---
     const tagElements = document.querySelectorAll('.tag');
     tagElements.forEach(el => {
         el.addEventListener('click', function() {
@@ -589,110 +802,97 @@ html_content += """
         if (modal.classList.contains('open')) closeModal();
     });
 
-// --- UPDATE TAG CLOUD BASED ON VISIBLE CARDS ---
-function updateTagCloud() {
-    const visibleCards = document.querySelectorAll('.card[style*="display: block"]');
-    const tagCounts = {};
-    
-    visibleCards.forEach(card => {
-        const tags = card.dataset.tags || '';
-        if (tags) {
-            tags.split(',').forEach(tag => {
-                tag = tag.trim();
-                if (tag) {
-                    tagCounts[tag] = (tagCounts[tag] || 0) + 1;
-                }
-            });
-        }
-    });
-    
-    const tagCloud = document.getElementById('tagCloud');
-    if (!tagCloud) return;
-    
-    // Clear current cloud
-    tagCloud.innerHTML = '';
-    
-    // Get max count for sizing
-    const maxCount = Math.max(...Object.values(tagCounts), 1);
-    
-    // Sort tags alphabetically
-    const sortedTags = Object.keys(tagCounts).sort();
-    
-    if (sortedTags.length === 0) {
-        tagCloud.innerHTML = '<span style="color: #b0a392; font-size: 0.9rem;">No tags match current filters</span>';
-        return;
-    }
-    
-    sortedTags.forEach(tag => {
-        const count = tagCounts[tag];
-        const size = 0.7 + (count / maxCount) * 0.7;
-        const span = document.createElement('span');
-        span.className = 'tag';
-        span.dataset.tag = tag;
-        span.style.fontSize = size + 'rem';
-        span.textContent = tag + ' (' + count + ')';
-        
-        // Add click handler for filtering by tag
-        span.addEventListener('click', function() {
-            const tag = this.dataset.tag;
-            if (activeTag === tag) {
-                activeTag = null;
-                this.classList.remove('active');
-            } else {
-                document.querySelectorAll('.tag').forEach(t => t.classList.remove('active'));
-                activeTag = tag;
-                this.classList.add('active');
+    // --- UPDATE TAG CLOUD DYNAMIC ---
+    function updateTagCloud() {
+        const visibleCards = document.querySelectorAll('.card[style*="display: block"]');
+        const tagCounts = {};
+
+        visibleCards.forEach(card => {
+            const tags = card.dataset.tags || '';
+            if (tags) {
+                tags.split(',').forEach(tag => {
+                    tag = tag.trim();
+                    if (tag) {
+                        tagCounts[tag] = (tagCounts[tag] || 0) + 1;
+                    }
+                });
             }
-            applyAllFilters();
         });
-        
-        // Preserve active state if this tag is currently active
-        if (activeTag === tag) {
-            span.classList.add('active');
+
+        const tagCloud = document.getElementById('tagCloud');
+        if (!tagCloud) return;
+
+        tagCloud.innerHTML = '';
+        const maxCount = Math.max(...Object.values(tagCounts), 1);
+        const sortedTags = Object.keys(tagCounts).sort();
+
+        if (sortedTags.length === 0) {
+            tagCloud.innerHTML = '<span style="color: #b0a392; font-size: 0.9rem;">No tags match current filters</span>';
+            return;
         }
-        
-        tagCloud.appendChild(span);
-    });
-}
+
+        sortedTags.forEach(tag => {
+            const count = tagCounts[tag];
+            const size = 0.7 + (count / maxCount) * 0.7;
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.dataset.tag = tag;
+            span.style.fontSize = size + 'rem';
+            span.textContent = tag + ' (' + count + ')';
+
+            span.addEventListener('click', function() {
+                const tag = this.dataset.tag;
+                if (activeTag === tag) {
+                    activeTag = null;
+                    this.classList.remove('active');
+                } else {
+                    document.querySelectorAll('.tag').forEach(t => t.classList.remove('active'));
+                    activeTag = tag;
+                    this.classList.add('active');
+                }
+                applyAllFilters();
+            });
+
+            if (activeTag === tag) {
+                span.classList.add('active');
+            }
+
+            tagCloud.appendChild(span);
+        });
+    }
 
     // --- MASTER FILTER FUNCTION ---
     function applyAllFilters() {
-    const search = document.getElementById('searchInput').value.toLowerCase();
-    cards.forEach(card => {
-        const cardGenre = card.dataset.genre;
-        const cardSearch = card.dataset.search;
-        const cardYear = parseInt(card.dataset.year) || null;
-        const cardTags = card.dataset.tags || '';
+        const search = document.getElementById('searchInput').value.toLowerCase();
+        cards.forEach(card => {
+            const cardGenre = card.dataset.genre;
+            const cardSearch = card.dataset.search;
+            const cardYear = parseInt(card.dataset.year) || null;
+            const cardTags = card.dataset.tags || '';
 
-        // Genre filter
-        const matchesGenre = activeGenre === 'all' || cardGenre === activeGenre;
+            const matchesGenre = activeGenre === 'all' || cardGenre === activeGenre;
+            const matchesSearch = cardSearch.includes(search);
 
-        // Search filter
-        const matchesSearch = cardSearch.includes(search);
-
-        // Decade filter
-        let matchesDecade = true;
-        if (activeDecade !== null) {
-            if (cardYear === null) {
-                matchesDecade = false;
-            } else {
-                matchesDecade = cardYear >= activeDecade && cardYear < activeDecade + 10;
+            let matchesDecade = true;
+            if (activeDecade !== null) {
+                if (cardYear === null) {
+                    matchesDecade = false;
+                } else {
+                    matchesDecade = cardYear >= activeDecade && cardYear < activeDecade + 10;
+                }
             }
-        }
 
-        // Tag filter
-        let matchesTag = true;
-        if (activeTag !== null) {
-            matchesTag = cardTags.includes(activeTag.toLowerCase());
-        }
+            let matchesTag = true;
+            if (activeTag !== null) {
+                matchesTag = cardTags.includes(activeTag.toLowerCase());
+            }
 
-        const visible = matchesGenre && matchesSearch && matchesDecade && matchesTag;
-        card.style.display = visible ? 'block' : 'none';
-    });
+            const visible = matchesGenre && matchesSearch && matchesDecade && matchesTag;
+            card.style.display = visible ? 'block' : 'none';
+        });
 
-    // --- UPDATE TAG CLOUD AFTER FILTERING ---
-    updateTagCloud();
-}
+        updateTagCloud();
+    }
 
     // --- WINDOW RESIZE ---
     window.addEventListener('resize', function() {
@@ -700,10 +900,15 @@ function updateTagCloud() {
             updateDimensions();
             clampPosition();
             updateTransform();
+            if (hotspotsVisible) {
+                setTimeout(function() {
+                    renderHotspots();
+                }, 50);
+            }
         }
     });
 
-    // Initialize
+    // --- INIT ---
     applyAllFilters();
 </script>
 </body>
