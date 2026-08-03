@@ -137,16 +137,35 @@ html_content = f"""<!DOCTYPE html>
         .tag:hover {{ background: #d4c9b8; transform: scale(1.05); }}
         .tag.active {{ background: #6b5f4f; color: white; border-color: #6b5f4f; }}
 
-        .filter-bar {{ text-align: center; margin-bottom: 25px; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }}
+        .filter-bar {{ text-align: center; margin-bottom: 15px; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; align-items: center; }}
         .filter-btn {{ padding: 8px 20px; border: 1px solid #d4c9b8; background: white; border-radius: 30px; cursor: pointer; font-size: 0.9rem; transition: all 0.2s ease; color: #2c2c2c; }}
         .filter-btn:hover {{ background: #eae5dd; }}
         .filter-btn.active {{ background: #6b5f4f; color: white; border-color: #6b5f4f; }}
+
+        .reset-filters {{
+            padding: 8px 20px;
+            border: 1px solid #d4c9b8;
+            background: #f0ede8;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s ease;
+            color: #4a3f33;
+        }}
+        .reset-filters:hover {{
+            background: #d4c9b8;
+        }}
+
         .search-bar {{ text-align: center; margin-bottom: 25px; }}
         .search-bar input {{ padding: 10px 20px; width: 60%; max-width: 400px; border: 1px solid #ccc; border-radius: 30px; font-size: 1rem; outline: none; }}
         .search-bar input:focus {{ border-color: #6b5f4f; }}
         .gallery {{ display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }}
-        .card {{ background: white; box-shadow: 0 4px 12px rgba(0,0,0,0.08); border-radius: 8px; overflow: hidden; transition: transform 0.2s ease; display: block; cursor: pointer; }}
+        .card {{ background: white; box-shadow: 0 4px 12px rgba(0,0,0,0.08); border-radius: 8px; overflow: hidden; transition: all 0.3s ease; display: block; cursor: pointer; }}
         .card:hover {{ transform: translateY(-5px); }}
+        .card.highlight {{
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.35);
+            transform: scale(1.02);
+        }}
         .card img {{ width: 100%; height: 220px; object-fit: cover; background: #eae5dd; }}
         .card-content {{ padding: 15px; }}
         .card-title {{ font-size: 1rem; font-weight: 600; margin: 0 0 5px 0; }}
@@ -158,65 +177,17 @@ html_content = f"""<!DOCTYPE html>
         .card-tag {{ font-size: 0.6rem; background: #f5f0ea; padding: 1px 8px; border-radius: 12px; color: #6b5f4f; }}
         .footer {{ text-align: center; margin-top: 40px; font-size: 0.8rem; color: #8c7d6b; border-top: 1px solid #ddd; padding-top: 20px; }}
 
-                /* --- MODAL --- */
-        .modal {{
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.92);
-        }}
-        .modal.open {{
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }}
-        .modal-content {{
-            max-width: 92%;
-            max-height: 92vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }}
-        
-        .modal-image-wrapper {{
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            max-width: 100%;
-            max-height: 85vh;
-            width: 100%;
-        }}
-        
-        .modal-image-container {{
-            width: 100%;
-            max-height: 72vh;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            cursor: grab;
-            background: transparent;
-        }}
-        .modal-image-container:active {{
-            cursor: grabbing;
-        }}
-        .modal-image-container img {{
-            max-width: 100%;
-            max-height: 72vh;
-            object-fit: contain;
-            user-select: none;
-            -webkit-user-drag: none;
-        }}
-        
+        /* --- MODAL --- */
+        .modal {{ display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.92); }}
+        .modal.open {{ display: flex; align-items: center; justify-content: center; }}
+        .modal-content {{ max-width: 92%; max-height: 92vh; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; }}
+
+        .modal-image-wrapper {{ position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; max-width: 100%; max-height: 85vh; width: 100%; }}
+
+        .modal-image-container {{ width: 100%; max-height: 72vh; overflow: hidden; display: flex; align-items: center; justify-content: center; position: relative; cursor: grab; background: transparent; }}
+        .modal-image-container:active {{ cursor: grabbing; }}
+        .modal-image-container img {{ max-width: 100%; max-height: 72vh; object-fit: contain; user-select: none; -webkit-user-drag: none; }}
+
         .modal-info {{
             color: white;
             text-align: center;
@@ -233,39 +204,15 @@ html_content = f"""<!DOCTYPE html>
             scrollbar-width: thin;
             scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
         }}
-        .modal-info::-webkit-scrollbar {{
-            width: 3px;
-        }}
-        .modal-info::-webkit-scrollbar-track {{
-            background: transparent;
-        }}
-        .modal-info::-webkit-scrollbar-thumb {{
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
-        }}
-        .modal-info::-webkit-scrollbar-thumb:hover {{
-            background: rgba(255, 255, 255, 0.35);
-        }}
-        
-        .modal-info h2 {{
-            margin: 0 0 3px 0;
-            font-weight: 400;
-            font-size: 1.3rem;
-        }}
-        .modal-info p {{
-            margin: 2px 0;
-            font-size: 0.9rem;
-            color: #d4c9b8;
-        }}
-        .modal-info .modal-desc {{
-            font-size: 0.85rem;
-            color: #ccc;
-            margin-top: 5px;
-            max-width: 600px;
-            line-height: 1.4;
-        }}
+        .modal-info::-webkit-scrollbar {{ width: 3px; }}
+        .modal-info::-webkit-scrollbar-track {{ background: transparent; }}
+        .modal-info::-webkit-scrollbar-thumb {{ background: rgba(255, 255, 255, 0.2); border-radius: 10px; }}
+        .modal-info::-webkit-scrollbar-thumb:hover {{ background: rgba(255, 255, 255, 0.35); }}
 
-        /* --- HOTSPOTS --- */
+        .modal-info h2 {{ margin: 0 0 3px 0; font-weight: 400; font-size: 1.3rem; }}
+        .modal-info p {{ margin: 2px 0; font-size: 0.9rem; color: #d4c9b8; }}
+        .modal-info .modal-desc {{ font-size: 0.85rem; color: #ccc; margin-top: 5px; max-width: 600px; line-height: 1.4; }}
+
         .hotspot-container {{
             position: absolute;
             top: 0;
@@ -316,15 +263,8 @@ html_content = f"""<!DOCTYPE html>
             transition: opacity 0.3s ease;
             transform: translateY(-10px);
         }}
-        .hotspot-tooltip.visible {{
-            opacity: 1;
-            transform: translateY(0);
-        }}
-        .hotspot-tooltip strong {{
-            color: #ffd700;
-            display: block;
-            margin-bottom: 4px;
-        }}
+        .hotspot-tooltip.visible {{ opacity: 1; transform: translateY(0); }}
+        .hotspot-tooltip strong {{ color: #ffd700; display: block; margin-bottom: 4px; }}
         .hotspot-toggle {{
             position: absolute;
             bottom: 20px;
@@ -341,9 +281,7 @@ html_content = f"""<!DOCTYPE html>
             transition: all 0.3s ease;
             pointer-events: auto;
         }}
-        .hotspot-toggle:hover {{
-            background: rgba(255, 215, 0, 0.3);
-        }}
+        .hotspot-toggle:hover {{ background: rgba(255, 215, 0, 0.3); }}
 
         .modal-close {{ position: absolute; top: 20px; right: 30px; color: white; font-size: 2.5rem; font-weight: 300; cursor: pointer; transition: 0.3s; z-index: 10; background: none; border: none; }}
         .modal-close:hover {{ color: #d4c9b8; transform: scale(1.1); }}
@@ -351,10 +289,6 @@ html_content = f"""<!DOCTYPE html>
         .modal-nav:hover {{ background: rgba(255,255,255,0.2); }}
         .modal-prev {{ left: 20px; }}
         .modal-next {{ right: 20px; }}
-        .modal-info {{ color: white; text-align: center; padding: 15px 20px; max-width: 80%; background: rgba(0,0,0,0.6); border-radius: 8px; margin-top: 15px; }}
-        .modal-info h2 {{ margin: 0 0 5px 0; font-weight: 400; font-size: 1.4rem; }}
-        .modal-info p {{ margin: 3px 0; font-size: 0.95rem; color: #d4c9b8; }}
-        .modal-info .modal-desc {{ font-size: 0.85rem; color: #bbb; margin-top: 8px; max-width: 600px; }}
         .modal-zoom-controls {{ position: absolute; bottom: 100px; right: 30px; display: flex; flex-direction: column; gap: 10px; z-index: 10; }}
         .modal-zoom-controls button {{ background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.3); border-radius: 50%; width: 40px; height: 40px; font-size: 1.2rem; cursor: pointer; transition: 0.3s; }}
         .modal-zoom-controls button:hover {{ background: rgba(255,255,255,0.3); }}
@@ -418,6 +352,7 @@ for genre in genres:
     html_content += f'        <button class="filter-btn" data-genre="{genre}">{genre}</button>\n'
 
 html_content += """
+        <button class="reset-filters" id="resetFilters">↻ Reset All Filters</button>
     </div>
     <div class="search-bar">
         <input type="text" id="searchInput" placeholder="🔍 Search by artist or title...">
@@ -444,9 +379,10 @@ for idx, item in enumerate(items):
                 tag_spans += f'<span class="card-tag">{tag}</span>'
 
     has_hotspots = 'true' if hotspots and hotspots.strip() else 'false'
+    year_value = extract_year(year) or ''
 
     html_content += f"""
-        <div class="card" data-index="{idx}" data-genre="{genre}" data-search="{title.lower()} {artist.lower()}" data-year="{extract_year(year) or ''}" data-tags="{tags.lower()}" data-has-hotspots="{has_hotspots}">
+        <div class="card" data-index="{idx}" data-genre="{genre}" data-search="{title.lower()} {artist.lower()}" data-year="{year_value}" data-tags="{tags.lower()}" data-has-hotspots="{has_hotspots}">
             <img src="{img}" alt="{title}" loading="lazy" onerror="this.src='https://via.placeholder.com/280x220/f0ede8/6b5f4f?text=No+Image'">
             <div class="card-content">
                 <p class="card-title">{title}</p>
@@ -543,12 +479,6 @@ html_content += """
         const fitRatio = Math.min(ratioX, ratioY);
         imgDisplayW = imgNaturalW * fitRatio;
         imgDisplayH = imgNaturalH * fitRatio;
-
-        // Store image position relative to container
-        imgOffsetX = imgRect.left - containerRect.left;
-        imgOffsetY = imgRect.top - containerRect.top;
-        imgRenderW = imgRect.width;
-        imgRenderH = imgRect.height;
     }
 
     // --- CLAMP POSITION ---
@@ -582,7 +512,7 @@ html_content += """
         updateTransform();
     }
 
-    // --- HOTSPOTS RENDERING (FIXED) ---
+    // --- HOTSPOTS RENDERING ---
     function renderHotspots() {
         const item = allItems[currentFilteredItems[currentIndex]];
         const hotspotsData = item.hotspots || '';
@@ -592,19 +522,13 @@ html_content += """
             return;
         }
 
-        // Get current position of the image inside the container
         const containerRect = modalContainer.getBoundingClientRect();
         const imgRect = modalImg.getBoundingClientRect();
-
-        // Image position relative to container
         const imgLeft = imgRect.left - containerRect.left;
         const imgTop = imgRect.top - containerRect.top;
-
-        // Image display size
         const imgW = imgRect.width;
         const imgH = imgRect.height;
 
-        // Parse hotspots: format is "x,y,text|x,y,text"
         const spots = hotspotsData.split('|');
         spots.forEach(spot => {
             const parts = spot.split(',');
@@ -612,21 +536,15 @@ html_content += """
                 const x = parseFloat(parts[0]);
                 const y = parseFloat(parts[1]);
                 const text = parts.slice(2).join(',').trim();
-
-                // Calculate position in pixels within the container
                 const posX = imgLeft + (imgW * x / 100);
                 const posY = imgTop + (imgH * y / 100);
-
                 const dot = document.createElement('div');
                 dot.className = 'hotspot';
                 dot.style.left = posX + 'px';
                 dot.style.top = posY + 'px';
-
-                // Extract title (first word before colon)
                 const titleMatch = text.match(/^([^:]+):/);
                 const title = titleMatch ? titleMatch[1].trim() : 'Symbol';
                 const description = text.replace(/^[^:]+:\s*/, '');
-
                 dot.addEventListener('mouseenter', function(e) {
                     showTooltip(e, title, description);
                 });
@@ -636,7 +554,6 @@ html_content += """
                 dot.addEventListener('mousemove', function(e) {
                     moveTooltip(e);
                 });
-
                 hotspotContainer.appendChild(dot);
             }
         });
@@ -662,7 +579,6 @@ html_content += """
     function moveTooltip(e) {
         let x = e.clientX + 15;
         let y = e.clientY - 10;
-        // Keep tooltip inside viewport
         if (x + 280 > window.innerWidth) x = e.clientX - 280;
         if (y + 100 > window.innerHeight) y = window.innerHeight - 100;
         if (y < 10) y = 10;
@@ -805,6 +721,14 @@ html_content += """
         updateTransform();
     }, { passive: true });
 
+    // --- WHEEL ZOOM ---
+    modalContainer.addEventListener('wheel', function(e) {
+        if (!modal.classList.contains('open')) return;
+        e.preventDefault();
+        const delta = e.deltaY > 0 ? -0.1 : 0.1;
+        applyZoom(scale + delta);
+    }, { passive: false });
+
     // --- EVENTS ---
     document.querySelectorAll('.card').forEach(card => {
         card.addEventListener('click', function() {
@@ -834,15 +758,32 @@ html_content += """
         resetZoom();
     });
 
+    // --- RESET FILTERS ---
+    document.getElementById('resetFilters').addEventListener('click', function() {
+        activeGenre = 'all';
+        filterButtons.forEach(btn => btn.classList.remove('active'));
+        document.querySelector('.filter-btn[data-genre="all"]').classList.add('active');
+        activeDecade = null;
+        decadeElements.forEach(d => d.classList.remove('active'));
+        activeTag = null;
+        document.querySelectorAll('.tag').forEach(t => t.classList.remove('active'));
+        document.getElementById('searchInput').value = '';
+        applyAllFilters();
+        if (modal.classList.contains('open')) closeModal();
+    });
+
     modal.addEventListener('click', function(e) {
         if (e.target === modal) closeModal();
     });
 
+    // --- KEYBOARD NAVIGATION (UPDATED) ---
     document.addEventListener('keydown', function(e) {
         if (!modal.classList.contains('open')) return;
         if (e.key === 'Escape') closeModal();
         if (e.key === 'ArrowLeft') changeImage(-1);
         if (e.key === 'ArrowRight') changeImage(1);
+        if (e.key === '+' || e.key === '=') zoomIn();
+        if (e.key === '-') zoomOut();
     });
 
     // --- TIMELINE ---
@@ -862,7 +803,7 @@ html_content += """
         });
     });
 
-    // --- TAG CLOUD (initial) ---
+    // --- TAG CLOUD ---
     const tagElements = document.querySelectorAll('.tag');
     tagElements.forEach(el => {
         el.addEventListener('click', function() {
@@ -958,7 +899,7 @@ html_content += """
         });
     }
 
-    // --- MASTER FILTER FUNCTION ---
+    // --- MASTER FILTER FUNCTION (UPDATED) ---
     function applyAllFilters() {
         const search = document.getElementById('searchInput').value.toLowerCase();
         cards.forEach(card => {
@@ -986,6 +927,14 @@ html_content += """
 
             const visible = matchesGenre && matchesSearch && matchesDecade && matchesTag;
             card.style.display = visible ? 'block' : 'none';
+
+            // Highlight cards when tag is active
+            card.classList.remove('highlight');
+            if (activeTag !== null && visible) {
+                if (cardTags.includes(activeTag.toLowerCase())) {
+                    card.classList.add('highlight');
+                }
+            }
         });
 
         updateTagCloud();
