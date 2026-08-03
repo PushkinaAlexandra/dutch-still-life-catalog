@@ -158,15 +158,112 @@ html_content = f"""<!DOCTYPE html>
         .card-tag {{ font-size: 0.6rem; background: #f5f0ea; padding: 1px 8px; border-radius: 12px; color: #6b5f4f; }}
         .footer {{ text-align: center; margin-top: 40px; font-size: 0.8rem; color: #8c7d6b; border-top: 1px solid #ddd; padding-top: 20px; }}
 
-        /* --- MODAL --- */
-        .modal {{ display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.92); }}
-        .modal.open {{ display: flex; align-items: center; justify-content: center; }}
-        .modal-content {{ max-width: 90%; max-height: 90%; display: flex; flex-direction: column; align-items: center; position: relative; }}
-
-        .modal-image-wrapper {{ position: relative; display: inline-block; max-width: 100%; max-height: 80vh; }}
-        .modal-image-container {{ width: 100%; max-height: 80vh; overflow: hidden; display: flex; align-items: center; justify-content: center; position: relative; cursor: grab; background: transparent; }}
-        .modal-image-container:active {{ cursor: grabbing; }}
-        .modal-image-container img {{ max-width: 100%; max-height: 80vh; object-fit: contain; user-select: none; -webkit-user-drag: none; }}
+                /* --- MODAL --- */
+        .modal {{
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.92);
+        }}
+        .modal.open {{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }}
+        .modal-content {{
+            max-width: 92%;
+            max-height: 92vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }}
+        
+        .modal-image-wrapper {{
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            max-width: 100%;
+            max-height: 85vh;
+            width: 100%;
+        }}
+        
+        .modal-image-container {{
+            width: 100%;
+            max-height: 72vh;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            cursor: grab;
+            background: transparent;
+        }}
+        .modal-image-container:active {{
+            cursor: grabbing;
+        }}
+        .modal-image-container img {{
+            max-width: 100%;
+            max-height: 72vh;
+            object-fit: contain;
+            user-select: none;
+            -webkit-user-drag: none;
+        }}
+        
+        .modal-info {{
+            color: white;
+            text-align: center;
+            padding: 12px 20px;
+            max-width: 90%;
+            background: rgba(0, 0, 0, 0.55);
+            border-radius: 8px;
+            margin-top: 12px;
+            width: auto;
+            min-width: 60%;
+            box-sizing: border-box;
+            max-height: 26vh;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+        }}
+        .modal-info::-webkit-scrollbar {{
+            width: 3px;
+        }}
+        .modal-info::-webkit-scrollbar-track {{
+            background: transparent;
+        }}
+        .modal-info::-webkit-scrollbar-thumb {{
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+        }}
+        .modal-info::-webkit-scrollbar-thumb:hover {{
+            background: rgba(255, 255, 255, 0.35);
+        }}
+        
+        .modal-info h2 {{
+            margin: 0 0 3px 0;
+            font-weight: 400;
+            font-size: 1.3rem;
+        }}
+        .modal-info p {{
+            margin: 2px 0;
+            font-size: 0.9rem;
+            color: #d4c9b8;
+        }}
+        .modal-info .modal-desc {{
+            font-size: 0.85rem;
+            color: #ccc;
+            margin-top: 5px;
+            max-width: 600px;
+            line-height: 1.4;
+        }}
 
         /* --- HOTSPOTS --- */
         .hotspot-container {{
