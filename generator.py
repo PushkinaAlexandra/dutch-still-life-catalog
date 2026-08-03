@@ -323,7 +323,7 @@ for genre in genres:
 html_content += """
     </div>
     <div class="search-bar">
-        <input type="text" id="searchInput" placeholder="🔍 Search by artist or title..." onkeyup="filterGallery()">
+        <input type="text" id="searchInput" placeholder="🔍 Search by artist or title...">
     </div>
     <div class="gallery" id="gallery">
 """
@@ -377,8 +377,8 @@ html_content += """
         <div class="modal-image-wrapper" id="modalImageWrapper">
             <div class="modal-image-container" id="modalImageContainer">
                 <img id="modalImage" src="" alt="">
+                <div class="hotspot-container" id="hotspotContainer"></div>
             </div>
-            <div class="hotspot-container" id="hotspotContainer"></div>
             <button class="hotspot-toggle" id="hotspotToggle">💡 Show Symbols</button>
         </div>
         <div class="modal-info" id="modalInfo">
