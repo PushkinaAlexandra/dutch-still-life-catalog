@@ -9,6 +9,28 @@
         .container { max-width: 1400px; margin: 0 auto; }
         h1 { font-weight: 300; font-size: 2.5rem; text-align: center; border-bottom: 2px solid #d4c9b8; padding-bottom: 10px; }
         .subtitle { text-align: center; font-size: 1.1rem; color: #6b5f4f; margin-top: -10px; margin-bottom: 30px; }
+
+        .timeline-section { background: white; border-radius: 8px; padding: 20px 30px; margin-bottom: 30px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+        .timeline-title { font-size: 0.9rem; font-weight: 600; color: #6b5f4f; margin-bottom: 15px; letter-spacing: 1px; text-transform: uppercase; }
+        .timeline { display: flex; justify-content: space-between; align-items: center; position: relative; padding: 10px 0; }
+        .timeline::before { content: ''; position: absolute; top: 50%; left: 0; right: 0; height: 2px; background: #d4c9b8; transform: translateY(-50%); }
+        .timeline-decade { display: flex; flex-direction: column; align-items: center; cursor: pointer; padding: 5px 0; position: relative; z-index: 1; transition: all 0.3s ease; }
+        .timeline-decade .year { font-size: 0.8rem; color: #8c7d6b; background: white; padding: 0 6px; transition: all 0.3s ease; }
+        .timeline-decade .dot { width: 12px; height: 12px; border-radius: 50%; background: #d4c9b8; border: 2px solid white; box-shadow: 0 1px 4px rgba(0,0,0,0.1); transition: all 0.3s ease; margin-top: 4px; }
+        .timeline-decade .count { font-size: 0.6rem; color: #b0a392; margin-top: 2px; transition: all 0.3s ease; }
+        .timeline-decade:hover .year { color: #2c2c2c; font-weight: 600; }
+        .timeline-decade:hover .dot { background: #6b5f4f; transform: scale(1.3); }
+        .timeline-decade.active .dot { background: #6b5f4f; transform: scale(1.3); }
+        .timeline-decade.active .year { color: #2c2c2c; font-weight: 600; }
+        .timeline-decade.has-items .dot { background: #6b5f4f; }
+
+        .tag-cloud-section { background: white; border-radius: 8px; padding: 20px 30px; margin-bottom: 30px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+        .tag-cloud-title { font-size: 0.9rem; font-weight: 600; color: #6b5f4f; margin-bottom: 15px; letter-spacing: 1px; text-transform: uppercase; }
+        .tag-cloud { display: flex; flex-wrap: wrap; gap: 8px 12px; justify-content: center; }
+        .tag { cursor: pointer; padding: 4px 14px; border-radius: 20px; background: #f0ede8; color: #4a3f33; font-size: 0.85rem; transition: all 0.3s ease; border: 1px solid transparent; }
+        .tag:hover { background: #d4c9b8; transform: scale(1.05); }
+        .tag.active { background: #6b5f4f; color: white; border-color: #6b5f4f; }
+
         .filter-bar { text-align: center; margin-bottom: 25px; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
         .filter-btn { padding: 8px 20px; border: 1px solid #d4c9b8; background: white; border-radius: 30px; cursor: pointer; font-size: 0.9rem; transition: all 0.2s ease; color: #2c2c2c; }
         .filter-btn:hover { background: #eae5dd; }
@@ -26,7 +48,10 @@
         .card-year { font-size: 0.8rem; color: #7e6f5c; margin: 0 0 8px 0; }
         .card-desc { font-size: 0.85rem; line-height: 1.4; color: #3d352b; margin: 0; }
         .card-genre { display: inline-block; margin-top: 8px; font-size: 0.75rem; background: #eae5dd; padding: 2px 12px; border-radius: 20px; color: #4a3f33; }
+        .card-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+        .card-tag { font-size: 0.6rem; background: #f5f0ea; padding: 1px 8px; border-radius: 12px; color: #6b5f4f; }
         .footer { text-align: center; margin-top: 40px; font-size: 0.8rem; color: #8c7d6b; border-top: 1px solid #ddd; padding-top: 20px; }
+
         .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.92); }
         .modal.open { display: flex; align-items: center; justify-content: center; }
         .modal-content { max-width: 90%; max-height: 90%; display: flex; flex-direction: column; align-items: center; position: relative; }
@@ -53,6 +78,161 @@
 <div class="container">
     <h1>Dutch Golden Age: Still Life Collection</h1>
     <p class="subtitle">12 Masterpieces from the Metropolitan Museum of Art · curated by Alexandra Pushkina</p>
+
+    <div class="timeline-section">
+        <div class="timeline-title">📅 Timeline · click to filter by decade</div>
+        <div class="timeline" id="timeline">
+    
+            <div class="timeline-decade has-items" data-decade="1600">
+                <span class="year">1600s</span>
+                <span class="dot"></span>
+                <span class="count">1</span>
+            </div>
+        
+            <div class="timeline-decade has-items" data-decade="1610">
+                <span class="year">1610s</span>
+                <span class="dot"></span>
+                <span class="count">1</span>
+            </div>
+        
+            <div class="timeline-decade has-items" data-decade="1620">
+                <span class="year">1620s</span>
+                <span class="dot"></span>
+                <span class="count">1</span>
+            </div>
+        
+            <div class="timeline-decade has-items" data-decade="1630">
+                <span class="year">1630s</span>
+                <span class="dot"></span>
+                <span class="count">1</span>
+            </div>
+        
+            <div class="timeline-decade has-items" data-decade="1640">
+                <span class="year">1640s</span>
+                <span class="dot"></span>
+                <span class="count">2</span>
+            </div>
+        
+            <div class="timeline-decade has-items" data-decade="1650">
+                <span class="year">1650s</span>
+                <span class="dot"></span>
+                <span class="count">2</span>
+            </div>
+        
+            <div class="timeline-decade has-items" data-decade="1660">
+                <span class="year">1660s</span>
+                <span class="dot"></span>
+                <span class="count">1</span>
+            </div>
+        
+            <div class="timeline-decade has-items" data-decade="1670">
+                <span class="year">1670s</span>
+                <span class="dot"></span>
+                <span class="count">1</span>
+            </div>
+        
+            <div class="timeline-decade " data-decade="1680">
+                <span class="year">1680s</span>
+                <span class="dot"></span>
+                <span class="count">0</span>
+            </div>
+        
+            <div class="timeline-decade has-items" data-decade="1690">
+                <span class="year">1690s</span>
+                <span class="dot"></span>
+                <span class="count">1</span>
+            </div>
+        
+            <div class="timeline-decade " data-decade="1700">
+                <span class="year">1700s</span>
+                <span class="dot"></span>
+                <span class="count">0</span>
+            </div>
+        
+            <div class="timeline-decade has-items" data-decade="1710">
+                <span class="year">1710s</span>
+                <span class="dot"></span>
+                <span class="count">1</span>
+            </div>
+        
+        </div>
+    </div>
+    
+    <div class="tag-cloud-section">
+        <div class="tag-cloud-title">🏷️ Tag Cloud · click to filter by symbol</div>
+        <div class="tag-cloud" id="tagCloud">
+    
+            <span class="tag" data-tag="Fruit" style="font-size:1.4rem;">Fruit (4)</span>
+        
+            <span class="tag" data-tag="Skull" style="font-size:1.2249999999999999rem;">Skull (3)</span>
+        
+            <span class="tag" data-tag="Flowers" style="font-size:1.2249999999999999rem;">Flowers (3)</span>
+        
+            <span class="tag" data-tag="Lemon" style="font-size:1.2249999999999999rem;">Lemon (3)</span>
+        
+            <span class="tag" data-tag="Lobster" style="font-size:1.0499999999999998rem;">Lobster (2)</span>
+        
+            <span class="tag" data-tag="Silver" style="font-size:1.0499999999999998rem;">Silver (2)</span>
+        
+            <span class="tag" data-tag="Vase" style="font-size:1.0499999999999998rem;">Vase (2)</span>
+        
+            <span class="tag" data-tag="Oysters" style="font-size:1.0499999999999998rem;">Oysters (2)</span>
+        
+            <span class="tag" data-tag="Tazza" style="font-size:0.875rem;">Tazza (1)</span>
+        
+            <span class="tag" data-tag="Candle" style="font-size:0.875rem;">Candle (1)</span>
+        
+            <span class="tag" data-tag="Quill" style="font-size:0.875rem;">Quill (1)</span>
+        
+            <span class="tag" data-tag="Globe" style="font-size:0.875rem;">Globe (1)</span>
+        
+            <span class="tag" data-tag="Musical Instruments" style="font-size:0.875rem;">Musical Instruments (1)</span>
+        
+            <span class="tag" data-tag="Books" style="font-size:0.875rem;">Books (1)</span>
+        
+            <span class="tag" data-tag="Soap Bubble" style="font-size:0.875rem;">Soap Bubble (1)</span>
+        
+            <span class="tag" data-tag="Bouquet" style="font-size:0.875rem;">Bouquet (1)</span>
+        
+            <span class="tag" data-tag="Wine Glass" style="font-size:0.875rem;">Wine Glass (1)</span>
+        
+            <span class="tag" data-tag="Fabrics" style="font-size:0.875rem;">Fabrics (1)</span>
+        
+            <span class="tag" data-tag="Glassware" style="font-size:0.875rem;">Glassware (1)</span>
+        
+            <span class="tag" data-tag="Wanli Bowl" style="font-size:0.875rem;">Wanli Bowl (1)</span>
+        
+            <span class="tag" data-tag="Porcelain" style="font-size:0.875rem;">Porcelain (1)</span>
+        
+            <span class="tag" data-tag="Insects" style="font-size:0.875rem;">Insects (1)</span>
+        
+            <span class="tag" data-tag="Reptiles" style="font-size:0.875rem;">Reptiles (1)</span>
+        
+            <span class="tag" data-tag="Poppy" style="font-size:0.875rem;">Poppy (1)</span>
+        
+            <span class="tag" data-tag="Butterfly" style="font-size:0.875rem;">Butterfly (1)</span>
+        
+            <span class="tag" data-tag="Lizard" style="font-size:0.875rem;">Lizard (1)</span>
+        
+            <span class="tag" data-tag="Peonies" style="font-size:0.875rem;">Peonies (1)</span>
+        
+            <span class="tag" data-tag="Irises" style="font-size:0.875rem;">Irises (1)</span>
+        
+            <span class="tag" data-tag="Roses" style="font-size:0.875rem;">Roses (1)</span>
+        
+            <span class="tag" data-tag="Heron" style="font-size:0.875rem;">Heron (1)</span>
+        
+            <span class="tag" data-tag="Game Birds" style="font-size:0.875rem;">Game Birds (1)</span>
+        
+            <span class="tag" data-tag="Hunting" style="font-size:0.875rem;">Hunting (1)</span>
+        
+            <span class="tag" data-tag="Silver Tazza" style="font-size:0.875rem;">Silver Tazza (1)</span>
+        
+            <span class="tag" data-tag="Glass" style="font-size:0.875rem;">Glass (1)</span>
+        
+        </div>
+    </div>
+    
     <div class="filter-bar">
         <button class="filter-btn active" data-genre="all">All</button>
         <button class="filter-btn" data-genre="Banketje / Ontbijtje">Banketje / Ontbijtje</button>
@@ -68,7 +248,7 @@
     </div>
     <div class="gallery" id="gallery">
 
-        <div class="card" data-index="0" data-genre="Pronkstilleven" data-search="still life with lobster and fruit abraham van beyeren">
+        <div class="card" data-index="0" data-genre="Pronkstilleven" data-search="still life with lobster and fruit abraham van beyeren" data-year="1650" data-tags="lobster, fruit, silver, tazza">
             <img src="https://collectionapi.metmuseum.org/api/collection/v1/iiif/435663/795734/main-image" alt="Still Life with Lobster and Fruit" loading="lazy" onerror="this.src='https://via.placeholder.com/280x220/f0ede8/6b5f4f?text=No+Image'">
             <div class="card-content">
                 <p class="card-title">Still Life with Lobster and Fruit</p>
@@ -76,10 +256,11 @@
                 <p class="card-year">probably early 1650s</p>
                 <p class="card-desc">A luxurious still life with a lobster, exotic fruits, and a silver tazza. The vibrant palette and virtuoso rendering of textures reflect the wealth and status of the Dutch Golden Age. The painting showcases mastery in depicting light on metal, glass, and the velvety skin of fruits.</p>
                 <span class="card-genre">Pronkstilleven</span>
+                <div class="card-tags"><span class="card-tag">Lobster</span><span class="card-tag">Fruit</span><span class="card-tag">Silver</span><span class="card-tag">Tazza</span></div>
             </div>
         </div>
     
-        <div class="card" data-index="1" data-genre="Vanitas" data-search="still life with a skull and a writing quill pieter claesz">
+        <div class="card" data-index="1" data-genre="Vanitas" data-search="still life with a skull and a writing quill pieter claesz" data-year="1628" data-tags="skull, candle, quill">
             <img src="https://collectionapi.metmuseum.org/api/collection/v1/iiif/435904/795798/main-image" alt="Still Life with a Skull and a Writing Quill" loading="lazy" onerror="this.src='https://via.placeholder.com/280x220/f0ede8/6b5f4f?text=No+Image'">
             <div class="card-content">
                 <p class="card-title">Still Life with a Skull and a Writing Quill</p>
@@ -87,10 +268,11 @@
                 <p class="card-year">1628</p>
                 <p class="card-desc">A classic example of the "vanitas" genre — a meditation on the transience of life. The skull, extinguished candle, and quill symbolize the futility of earthly labors in the face of death. The restrained monochrome palette reinforces the philosophical mood.</p>
                 <span class="card-genre">Vanitas</span>
+                <div class="card-tags"><span class="card-tag">Skull</span><span class="card-tag">Candle</span><span class="card-tag">Quill</span></div>
             </div>
         </div>
     
-        <div class="card" data-index="2" data-genre="Vanitas" data-search="vanitas still life edwaert collier">
+        <div class="card" data-index="2" data-genre="Vanitas" data-search="vanitas still life edwaert collier" data-year="1662" data-tags="skull, globe, musical instruments, books">
             <img src="https://collectionapi.metmuseum.org/api/collection/v1/iiif/435918/795874/main-image" alt="Vanitas Still Life" loading="lazy" onerror="this.src='https://via.placeholder.com/280x220/f0ede8/6b5f4f?text=No+Image'">
             <div class="card-content">
                 <p class="card-title">Vanitas Still Life</p>
@@ -98,10 +280,11 @@
                 <p class="card-year">1662</p>
                 <p class="card-desc">A theatrical vanitas composition: a skull, musical instruments, a globe, and books. Each object reminds us of the vanity of worldly pleasures and the inevitability of death. The play of light and shadow adds dramatic tension to the scene.</p>
                 <span class="card-genre">Vanitas</span>
+                <div class="card-tags"><span class="card-tag">Skull</span><span class="card-tag">Globe</span><span class="card-tag">Musical Instruments</span><span class="card-tag">Books</span></div>
             </div>
         </div>
     
-        <div class="card" data-index="3" data-genre="Vanitas" data-search="vanitas still life jacques de gheyn ii">
+        <div class="card" data-index="3" data-genre="Vanitas" data-search="vanitas still life jacques de gheyn ii" data-year="1603" data-tags="skull, flowers, soap bubble">
             <img src="https://collectionapi.metmuseum.org/api/collection/v1/iiif/436485/795736/main-image" alt="Vanitas Still Life" loading="lazy" onerror="this.src='https://via.placeholder.com/280x220/f0ede8/6b5f4f?text=No+Image'">
             <div class="card-content">
                 <p class="card-title">Vanitas Still Life</p>
@@ -109,10 +292,11 @@
                 <p class="card-year">1603</p>
                 <p class="card-desc">One of the earliest vanitas still lifes in European art. The skull, flowers, and soap bubble symbolize the fragility of life and the fleeting nature of beauty. The work is distinguished by fine detail and rich symbolism.</p>
                 <span class="card-genre">Vanitas</span>
+                <div class="card-tags"><span class="card-tag">Skull</span><span class="card-tag">Flowers</span><span class="card-tag">Soap Bubble</span></div>
             </div>
         </div>
     
-        <div class="card" data-index="4" data-genre="Flower Still Life" data-search="a vase of flowers margareta haverman">
+        <div class="card" data-index="4" data-genre="Flower Still Life" data-search="a vase of flowers margareta haverman" data-year="1716" data-tags="flowers, vase, bouquet">
             <img src="https://collectionapi.metmuseum.org/api/collection/v1/iiif/436634/1817784/main-image" alt="A Vase of Flowers" loading="lazy" onerror="this.src='https://via.placeholder.com/280x220/f0ede8/6b5f4f?text=No+Image'">
             <div class="card-content">
                 <p class="card-title">A Vase of Flowers</p>
@@ -120,10 +304,11 @@
                 <p class="card-year">1716</p>
                 <p class="card-desc">A rare work by a 18th-century female artist. An elegant bouquet in a glass vase is painted with astonishing precision: every petal and leaf is rendered with botanical care. The bright, joyful palette distinguishes this piece from darker vanitas scenes.</p>
                 <span class="card-genre">Flower Still Life</span>
+                <div class="card-tags"><span class="card-tag">Flowers</span><span class="card-tag">Vase</span><span class="card-tag">Bouquet</span></div>
             </div>
         </div>
     
-        <div class="card" data-index="5" data-genre="Banketje / Ontbijtje" data-search="still life with a glass and oysters jan davidsz de heem">
+        <div class="card" data-index="5" data-genre="Banketje / Ontbijtje" data-search="still life with a glass and oysters jan davidsz de heem" data-year="1640" data-tags="oysters, wine glass, lemon">
             <img src="https://collectionapi.metmuseum.org/api/collection/v1/iiif/436636/795903/main-image" alt="Still Life with a Glass and Oysters" loading="lazy" onerror="this.src='https://via.placeholder.com/280x220/f0ede8/6b5f4f?text=No+Image'">
             <div class="card-content">
                 <p class="card-title">Still Life with a Glass and Oysters</p>
@@ -131,10 +316,11 @@
                 <p class="card-year">ca. 1640</p>
                 <p class="card-desc">An exquisite small-scale still life: oysters, a wine glass, and a lemon. The rendering of glass transparency and the wet gleam of oysters is a testament to virtuoso technique. The work reflects the Dutch love for refined table details.</p>
                 <span class="card-genre">Banketje / Ontbijtje</span>
+                <div class="card-tags"><span class="card-tag">Oysters</span><span class="card-tag">Wine Glass</span><span class="card-tag">Lemon</span></div>
             </div>
         </div>
     
-        <div class="card" data-index="6" data-genre="Pronkstilleven" data-search="still life: a banqueting scene jan davidsz de heem">
+        <div class="card" data-index="6" data-genre="Pronkstilleven" data-search="still life: a banqueting scene jan davidsz de heem" data-year="1640" data-tags="lobster, fruit, silver, lemon, fabrics">
             <img src="https://collectionapi.metmuseum.org/api/collection/v1/iiif/436637/793886/main-image" alt="Still Life: A Banqueting Scene" loading="lazy" onerror="this.src='https://via.placeholder.com/280x220/f0ede8/6b5f4f?text=No+Image'">
             <div class="card-content">
                 <p class="card-title">Still Life: A Banqueting Scene</p>
@@ -142,10 +328,11 @@
                 <p class="card-year">probably ca. 1640–41</p>
                 <p class="card-desc">A monumental banquet painting. On the table are fruits, a lobster, silverware, lemons, and luxurious fabrics. The composition conveys the abundance and opulence of a Dutch aristocratic feast. Every detail is rendered with jewelry-like precision.</p>
                 <span class="card-genre">Pronkstilleven</span>
+                <div class="card-tags"><span class="card-tag">Lobster</span><span class="card-tag">Fruit</span><span class="card-tag">Silver</span><span class="card-tag">Lemon</span><span class="card-tag">Fabrics</span></div>
             </div>
         </div>
     
-        <div class="card" data-index="7" data-genre="Pronkstilleven" data-search="still life with fruit, glassware, and a wanli bowl willem kalf">
+        <div class="card" data-index="7" data-genre="Pronkstilleven" data-search="still life with fruit, glassware, and a wanli bowl willem kalf" data-year="1659" data-tags="fruit, glassware, wanli bowl, porcelain">
             <img src="https://collectionapi.metmuseum.org/api/collection/v1/iiif/436805/795801/main-image" alt="Still Life with Fruit, Glassware, and a Wanli Bowl" loading="lazy" onerror="this.src='https://via.placeholder.com/280x220/f0ede8/6b5f4f?text=No+Image'">
             <div class="card-content">
                 <p class="card-title">Still Life with Fruit, Glassware, and a Wanli Bowl</p>
@@ -153,10 +340,11 @@
                 <p class="card-year">1659</p>
                 <p class="card-desc">Kalf's mastery in rendering light and texture reaches its peak here. A Chinese Wanli porcelain vase, glassware, and fruits are painted with near-photographic precision. The play of reflections on polished surfaces is mesmerizing.</p>
                 <span class="card-genre">Pronkstilleven</span>
+                <div class="card-tags"><span class="card-tag">Fruit</span><span class="card-tag">Glassware</span><span class="card-tag">Wanli Bowl</span><span class="card-tag">Porcelain</span></div>
             </div>
         </div>
     
-        <div class="card" data-index="8" data-genre="Sottobosco" data-search="still life with poppy, insects, and reptiles otto marseus van schrieck">
+        <div class="card" data-index="8" data-genre="Sottobosco" data-search="still life with poppy, insects, and reptiles otto marseus van schrieck" data-year="1670" data-tags="insects, reptiles, poppy, butterfly, lizard">
             <img src="https://collectionapi.metmuseum.org/api/collection/v1/iiif/436976/795802/main-image" alt="Still Life with Poppy, Insects, and Reptiles" loading="lazy" onerror="this.src='https://via.placeholder.com/280x220/f0ede8/6b5f4f?text=No+Image'">
             <div class="card-content">
                 <p class="card-title">Still Life with Poppy, Insects, and Reptiles</p>
@@ -164,10 +352,11 @@
                 <p class="card-year">ca. 1670</p>
                 <p class="card-desc">An unusual forest-floor still life: poppy, insects, and reptiles. Marseus van Schrieck worked in the "bosstilleven" genre, blending botanical precision with elements of grotesque and surrealism. The dark background highlights the vividness of the flowers and the detailed creatures.</p>
                 <span class="card-genre">Sottobosco</span>
+                <div class="card-tags"><span class="card-tag">Insects</span><span class="card-tag">Reptiles</span><span class="card-tag">Poppy</span><span class="card-tag">Butterfly</span><span class="card-tag">Lizard</span></div>
             </div>
         </div>
     
-        <div class="card" data-index="9" data-genre="Flower Still Life" data-search="a vase with flowers jacob vosmaer">
+        <div class="card" data-index="9" data-genre="Flower Still Life" data-search="a vase with flowers jacob vosmaer" data-year="1613" data-tags="flowers, vase, peonies, irises, roses">
             <img src="https://collectionapi.metmuseum.org/api/collection/v1/iiif/437920/795809/main-image" alt="A Vase with Flowers" loading="lazy" onerror="this.src='https://via.placeholder.com/280x220/f0ede8/6b5f4f?text=No+Image'">
             <div class="card-content">
                 <p class="card-title">A Vase with Flowers</p>
@@ -175,10 +364,11 @@
                 <p class="card-year">probably 1613</p>
                 <p class="card-desc">An early Dutch flower still life. A large vase with a lush bouquet of peonies, irises, and roses. The work is distinguished by its decorative richness and delicate color harmony. One of the earliest examples of this genre in the Met collection.</p>
                 <span class="card-genre">Flower Still Life</span>
+                <div class="card-tags"><span class="card-tag">Flowers</span><span class="card-tag">Vase</span><span class="card-tag">Peonies</span><span class="card-tag">Irises</span><span class="card-tag">Roses</span></div>
             </div>
         </div>
     
-        <div class="card" data-index="10" data-genre="Hunting / Gamepiece" data-search="gamepiece with a dead heron jan weenix">
+        <div class="card" data-index="10" data-genre="Hunting / Gamepiece" data-search="gamepiece with a dead heron jan weenix" data-year="1695" data-tags="heron, game birds, fruit, hunting">
             <img src="https://collectionapi.metmuseum.org/api/collection/v1/iiif/437937/795799/main-image" alt="Gamepiece with a Dead Heron" loading="lazy" onerror="this.src='https://via.placeholder.com/280x220/f0ede8/6b5f4f?text=No+Image'">
             <div class="card-content">
                 <p class="card-title">Gamepiece with a Dead Heron</p>
@@ -186,10 +376,11 @@
                 <p class="card-year">1695</p>
                 <p class="card-desc">An impressive hunting still life: a dead heron, game birds, and fruits set against a park landscape. The painting combines still life with landscape, reflecting the influence of aristocratic hunting culture. Dramatic lighting and sculptural composition create a vivid sense of presence.</p>
                 <span class="card-genre">Hunting / Gamepiece</span>
+                <div class="card-tags"><span class="card-tag">Heron</span><span class="card-tag">Game Birds</span><span class="card-tag">Fruit</span><span class="card-tag">Hunting</span></div>
             </div>
         </div>
     
-        <div class="card" data-index="11" data-genre="Banketje / Ontbijtje" data-search="still life with oysters, a silver tazza, and glassware willem claesz heda">
+        <div class="card" data-index="11" data-genre="Banketje / Ontbijtje" data-search="still life with oysters, a silver tazza, and glassware willem claesz heda" data-year="1635" data-tags="oysters, silver tazza, glass, lemon">
             <img src="https://collectionapi.metmuseum.org/api/collection/v1/iiif/438376/794512/main-image" alt="Still Life with Oysters, a Silver Tazza, and Glassware" loading="lazy" onerror="this.src='https://via.placeholder.com/280x220/f0ede8/6b5f4f?text=No+Image'">
             <div class="card-content">
                 <p class="card-title">Still Life with Oysters, a Silver Tazza, and Glassware</p>
@@ -197,6 +388,7 @@
                 <p class="card-year">1635</p>
                 <p class="card-desc">A masterpiece of the Dutch "breakfast" piece (banketje). Oysters, a silver tazza, an overturned glass, and a lemon are rendered in a restrained silvery-green palette. Heda masterfully conveys the textures of metal, glass, and the moist rind of the lemon — a classic of monochrome still life.</p>
                 <span class="card-genre">Banketje / Ontbijtje</span>
+                <div class="card-tags"><span class="card-tag">Oysters</span><span class="card-tag">Silver Tazza</span><span class="card-tag">Glass</span><span class="card-tag">Lemon</span></div>
             </div>
         </div>
     
@@ -204,6 +396,7 @@
     <div class="footer">Data source: Metropolitan Museum of Art · Open Access</div>
 </div>
 
+<!-- ===== MODAL ===== -->
 <div id="modal" class="modal">
     <button class="modal-close" id="modalClose">&times;</button>
     <button class="modal-nav modal-prev" id="modalPrev">&#10094;</button>
@@ -228,7 +421,7 @@
 </div>
 
 <script>
-    const allItems = [{title:'Still Life with Lobster and Fruit',artist:'Abraham van Beyeren',year:'probably early 1650s',desc:'A luxurious still life with a lobster, exotic fruits, and a silver tazza. The vibrant palette and virtuoso rendering of textures reflect the wealth and status of the Dutch Golden Age. The painting showcases mastery in depicting light on metal, glass, and the velvety skin of fruits.',image:'https://collectionapi.metmuseum.org/api/collection/v1/iiif/435663/795734/main-image',genre:'Pronkstilleven'},{title:'Still Life with a Skull and a Writing Quill',artist:'Pieter Claesz',year:'1628',desc:'A classic example of the \"vanitas\" genre — a meditation on the transience of life. The skull, extinguished candle, and quill symbolize the futility of earthly labors in the face of death. The restrained monochrome palette reinforces the philosophical mood.',image:'https://collectionapi.metmuseum.org/api/collection/v1/iiif/435904/795798/main-image',genre:'Vanitas'},{title:'Vanitas Still Life',artist:'Edwaert Collier',year:'1662',desc:'A theatrical vanitas composition: a skull, musical instruments, a globe, and books. Each object reminds us of the vanity of worldly pleasures and the inevitability of death. The play of light and shadow adds dramatic tension to the scene.',image:'https://collectionapi.metmuseum.org/api/collection/v1/iiif/435918/795874/main-image',genre:'Vanitas'},{title:'Vanitas Still Life',artist:'Jacques de Gheyn II',year:'1603',desc:'One of the earliest vanitas still lifes in European art. The skull, flowers, and soap bubble symbolize the fragility of life and the fleeting nature of beauty. The work is distinguished by fine detail and rich symbolism.',image:'https://collectionapi.metmuseum.org/api/collection/v1/iiif/436485/795736/main-image',genre:'Vanitas'},{title:'A Vase of Flowers',artist:'Margareta Haverman',year:'1716',desc:'A rare work by a 18th-century female artist. An elegant bouquet in a glass vase is painted with astonishing precision: every petal and leaf is rendered with botanical care. The bright, joyful palette distinguishes this piece from darker vanitas scenes.',image:'https://collectionapi.metmuseum.org/api/collection/v1/iiif/436634/1817784/main-image',genre:'Flower Still Life'},{title:'Still Life with a Glass and Oysters',artist:'Jan Davidsz de Heem',year:'ca. 1640',desc:'An exquisite small-scale still life: oysters, a wine glass, and a lemon. The rendering of glass transparency and the wet gleam of oysters is a testament to virtuoso technique. The work reflects the Dutch love for refined table details.',image:'https://collectionapi.metmuseum.org/api/collection/v1/iiif/436636/795903/main-image',genre:'Banketje / Ontbijtje'},{title:'Still Life: A Banqueting Scene',artist:'Jan Davidsz de Heem',year:'probably ca. 1640–41',desc:'A monumental banquet painting. On the table are fruits, a lobster, silverware, lemons, and luxurious fabrics. The composition conveys the abundance and opulence of a Dutch aristocratic feast. Every detail is rendered with jewelry-like precision.',image:'https://collectionapi.metmuseum.org/api/collection/v1/iiif/436637/793886/main-image',genre:'Pronkstilleven'},{title:'Still Life with Fruit, Glassware, and a Wanli Bowl',artist:'Willem Kalf',year:'1659',desc:'Kalf\'s mastery in rendering light and texture reaches its peak here. A Chinese Wanli porcelain vase, glassware, and fruits are painted with near-photographic precision. The play of reflections on polished surfaces is mesmerizing.',image:'https://collectionapi.metmuseum.org/api/collection/v1/iiif/436805/795801/main-image',genre:'Pronkstilleven'},{title:'Still Life with Poppy, Insects, and Reptiles',artist:'Otto Marseus van Schrieck',year:'ca. 1670',desc:'An unusual forest-floor still life: poppy, insects, and reptiles. Marseus van Schrieck worked in the \"bosstilleven\" genre, blending botanical precision with elements of grotesque and surrealism. The dark background highlights the vividness of the flowers and the detailed creatures.',image:'https://collectionapi.metmuseum.org/api/collection/v1/iiif/436976/795802/main-image',genre:'Sottobosco'},{title:'A Vase with Flowers',artist:'Jacob Vosmaer',year:'probably 1613',desc:'An early Dutch flower still life. A large vase with a lush bouquet of peonies, irises, and roses. The work is distinguished by its decorative richness and delicate color harmony. One of the earliest examples of this genre in the Met collection.',image:'https://collectionapi.metmuseum.org/api/collection/v1/iiif/437920/795809/main-image',genre:'Flower Still Life'},{title:'Gamepiece with a Dead Heron',artist:'Jan Weenix',year:'1695',desc:'An impressive hunting still life: a dead heron, game birds, and fruits set against a park landscape. The painting combines still life with landscape, reflecting the influence of aristocratic hunting culture. Dramatic lighting and sculptural composition create a vivid sense of presence.',image:'https://collectionapi.metmuseum.org/api/collection/v1/iiif/437937/795799/main-image',genre:'Hunting / Gamepiece'},{title:'Still Life with Oysters, a Silver Tazza, and Glassware',artist:'Willem Claesz Heda',year:'1635',desc:'A masterpiece of the Dutch \"breakfast\" piece (banketje). Oysters, a silver tazza, an overturned glass, and a lemon are rendered in a restrained silvery-green palette. Heda masterfully conveys the textures of metal, glass, and the moist rind of the lemon — a classic of monochrome still life.',image:'https://collectionapi.metmuseum.org/api/collection/v1/iiif/438376/794512/main-image',genre:'Banketje / Ontbijtje'}];
+    const allItems = [{title:'Still Life with Lobster and Fruit',artist:'Abraham van Beyeren',year:'probably early 1650s',desc:'A luxurious still life with a lobster, exotic fruits, and a silver tazza. The vibrant palette and virtuoso rendering of textures reflect the wealth and status of the Dutch Golden Age. The painting showcases mastery in depicting light on metal, glass, and the velvety skin of fruits.',image:'https://collectionapi.metmuseum.org/api/collection/v1/iiif/435663/795734/main-image',genre:'Pronkstilleven',tags:'Lobster, Fruit, Silver, Tazza'},{title:'Still Life with a Skull and a Writing Quill',artist:'Pieter Claesz',year:'1628',desc:'A classic example of the \"vanitas\" genre — a meditation on the transience of life. The skull, extinguished candle, and quill symbolize the futility of earthly labors in the face of death. The restrained monochrome palette reinforces the philosophical mood.',image:'https://collectionapi.metmuseum.org/api/collection/v1/iiif/435904/795798/main-image',genre:'Vanitas',tags:'Skull, Candle, Quill'},{title:'Vanitas Still Life',artist:'Edwaert Collier',year:'1662',desc:'A theatrical vanitas composition: a skull, musical instruments, a globe, and books. Each object reminds us of the vanity of worldly pleasures and the inevitability of death. The play of light and shadow adds dramatic tension to the scene.',image:'https://collectionapi.metmuseum.org/api/collection/v1/iiif/435918/795874/main-image',genre:'Vanitas',tags:'Skull, Globe, Musical Instruments, Books'},{title:'Vanitas Still Life',artist:'Jacques de Gheyn II',year:'1603',desc:'One of the earliest vanitas still lifes in European art. The skull, flowers, and soap bubble symbolize the fragility of life and the fleeting nature of beauty. The work is distinguished by fine detail and rich symbolism.',image:'https://collectionapi.metmuseum.org/api/collection/v1/iiif/436485/795736/main-image',genre:'Vanitas',tags:'Skull, Flowers, Soap Bubble'},{title:'A Vase of Flowers',artist:'Margareta Haverman',year:'1716',desc:'A rare work by a 18th-century female artist. An elegant bouquet in a glass vase is painted with astonishing precision: every petal and leaf is rendered with botanical care. The bright, joyful palette distinguishes this piece from darker vanitas scenes.',image:'https://collectionapi.metmuseum.org/api/collection/v1/iiif/436634/1817784/main-image',genre:'Flower Still Life',tags:'Flowers, Vase, Bouquet'},{title:'Still Life with a Glass and Oysters',artist:'Jan Davidsz de Heem',year:'ca. 1640',desc:'An exquisite small-scale still life: oysters, a wine glass, and a lemon. The rendering of glass transparency and the wet gleam of oysters is a testament to virtuoso technique. The work reflects the Dutch love for refined table details.',image:'https://collectionapi.metmuseum.org/api/collection/v1/iiif/436636/795903/main-image',genre:'Banketje / Ontbijtje',tags:'Oysters, Wine Glass, Lemon'},{title:'Still Life: A Banqueting Scene',artist:'Jan Davidsz de Heem',year:'probably ca. 1640–41',desc:'A monumental banquet painting. On the table are fruits, a lobster, silverware, lemons, and luxurious fabrics. The composition conveys the abundance and opulence of a Dutch aristocratic feast. Every detail is rendered with jewelry-like precision.',image:'https://collectionapi.metmuseum.org/api/collection/v1/iiif/436637/793886/main-image',genre:'Pronkstilleven',tags:'Lobster, Fruit, Silver, Lemon, Fabrics'},{title:'Still Life with Fruit, Glassware, and a Wanli Bowl',artist:'Willem Kalf',year:'1659',desc:'Kalf\'s mastery in rendering light and texture reaches its peak here. A Chinese Wanli porcelain vase, glassware, and fruits are painted with near-photographic precision. The play of reflections on polished surfaces is mesmerizing.',image:'https://collectionapi.metmuseum.org/api/collection/v1/iiif/436805/795801/main-image',genre:'Pronkstilleven',tags:'Fruit, Glassware, Wanli Bowl, Porcelain'},{title:'Still Life with Poppy, Insects, and Reptiles',artist:'Otto Marseus van Schrieck',year:'ca. 1670',desc:'An unusual forest-floor still life: poppy, insects, and reptiles. Marseus van Schrieck worked in the \"bosstilleven\" genre, blending botanical precision with elements of grotesque and surrealism. The dark background highlights the vividness of the flowers and the detailed creatures.',image:'https://collectionapi.metmuseum.org/api/collection/v1/iiif/436976/795802/main-image',genre:'Sottobosco',tags:'Insects, Reptiles, Poppy, Butterfly, Lizard'},{title:'A Vase with Flowers',artist:'Jacob Vosmaer',year:'probably 1613',desc:'An early Dutch flower still life. A large vase with a lush bouquet of peonies, irises, and roses. The work is distinguished by its decorative richness and delicate color harmony. One of the earliest examples of this genre in the Met collection.',image:'https://collectionapi.metmuseum.org/api/collection/v1/iiif/437920/795809/main-image',genre:'Flower Still Life',tags:'Flowers, Vase, Peonies, Irises, Roses'},{title:'Gamepiece with a Dead Heron',artist:'Jan Weenix',year:'1695',desc:'An impressive hunting still life: a dead heron, game birds, and fruits set against a park landscape. The painting combines still life with landscape, reflecting the influence of aristocratic hunting culture. Dramatic lighting and sculptural composition create a vivid sense of presence.',image:'https://collectionapi.metmuseum.org/api/collection/v1/iiif/437937/795799/main-image',genre:'Hunting / Gamepiece',tags:'Heron, Game Birds, Fruit, Hunting'},{title:'Still Life with Oysters, a Silver Tazza, and Glassware',artist:'Willem Claesz Heda',year:'1635',desc:'A masterpiece of the Dutch \"breakfast\" piece (banketje). Oysters, a silver tazza, an overturned glass, and a lemon are rendered in a restrained silvery-green palette. Heda masterfully conveys the textures of metal, glass, and the moist rind of the lemon — a classic of monochrome still life.',image:'https://collectionapi.metmuseum.org/api/collection/v1/iiif/438376/794512/main-image',genre:'Banketje / Ontbijtje',tags:'Oysters, Silver Tazza, Glass, Lemon'}];
 
     // --- STATE ---
     let currentFilteredItems = [];
@@ -238,8 +431,10 @@
     let isDragging = false;
     let startX = 0, startY = 0;
     let dragStartX = 0, dragStartY = 0;
+    let activeDecade = null;
+    let activeTag = null;
+    let activeGenre = 'all';
 
-    // Image and container dimensions (updated on load/resize)
     let imgNaturalW = 0, imgNaturalH = 0;
     let containerW = 0, containerH = 0;
     let imgDisplayW = 0, imgDisplayH = 0;
@@ -258,12 +453,8 @@
         const containerRect = modalContainer.getBoundingClientRect();
         containerW = containerRect.width;
         containerH = containerRect.height;
-
-        // Get natural dimensions
         imgNaturalW = modalImg.naturalWidth || 1;
         imgNaturalH = modalImg.naturalHeight || 1;
-
-        // Calculate display dimensions (how image fits in container with object-fit: contain)
         const ratioX = containerW / imgNaturalW;
         const ratioY = containerH / imgNaturalH;
         const fitRatio = Math.min(ratioX, ratioY);
@@ -278,15 +469,10 @@
             translateY = 0;
             return;
         }
-
-        // Image size after zoom
         const zoomedW = imgDisplayW * scale;
         const zoomedH = imgDisplayH * scale;
-
-        // Max translation to keep image inside viewport
         const maxX = Math.max(0, (zoomedW - containerW) / 2);
         const maxY = Math.max(0, (zoomedH - containerH) / 2);
-
         translateX = Math.min(Math.max(translateX, -maxX), maxX);
         translateY = Math.min(Math.max(translateY, -maxY), maxY);
     }
@@ -296,7 +482,7 @@
         modalImg.style.transform = 'translate(' + translateX + 'px, ' + translateY + 'px) scale(' + scale + ')';
     }
 
-    // --- APPLY ZOOM WITH BOUNDS ---
+    // --- APPLY ZOOM ---
     function applyZoom(newScale) {
         scale = Math.min(Math.max(newScale, 0.5), 4);
         updateDimensions();
@@ -304,7 +490,7 @@
         updateTransform();
     }
 
-    // --- MODAL FUNCTIONS ---
+    // --- MODAL ---
     function getVisibleItems() {
         const cards = document.querySelectorAll('.card');
         const visible = [];
@@ -336,7 +522,6 @@
         modalYear.textContent = item.year;
         modalDesc.textContent = item.desc || '';
         modalCounter.textContent = (currentIndex + 1) + ' / ' + currentFilteredItems.length;
-        // Reset and recalculate after image loads
         scale = 1;
         translateX = 0;
         translateY = 0;
@@ -345,7 +530,6 @@
             clampPosition();
             updateTransform();
         };
-        // If image is cached, onload may not fire
         setTimeout(function() {
             updateDimensions();
             clampPosition();
@@ -364,17 +548,9 @@
         showItem();
     }
 
-    function resetZoom() {
-        applyZoom(1);
-    }
-
-    function zoomIn() {
-        applyZoom(scale + 0.2);
-    }
-
-    function zoomOut() {
-        applyZoom(scale - 0.2);
-    }
+    function resetZoom() { applyZoom(1); }
+    function zoomIn() { applyZoom(scale + 0.2); }
+    function zoomOut() { applyZoom(scale - 0.2); }
 
     // --- DRAG ---
     modalContainer.addEventListener('mousedown', function(e) {
@@ -429,15 +605,6 @@
         updateTransform();
     }, { passive: true });
 
-    // --- WINDOW RESIZE ---
-    window.addEventListener('resize', function() {
-        if (modal.classList.contains('open')) {
-            updateDimensions();
-            clampPosition();
-            updateTransform();
-        }
-    });
-
     // --- EVENTS ---
     document.querySelectorAll('.card').forEach(card => {
         card.addEventListener('click', function() {
@@ -478,7 +645,41 @@
         if (e.key === 'ArrowRight') changeImage(1);
     });
 
-    // --- FILTER ---
+    // --- TIMELINE ---
+    const decadeElements = document.querySelectorAll('.timeline-decade');
+    decadeElements.forEach(el => {
+        el.addEventListener('click', function() {
+            const decade = parseInt(this.dataset.decade);
+            if (activeDecade === decade) {
+                activeDecade = null;
+                this.classList.remove('active');
+            } else {
+                decadeElements.forEach(d => d.classList.remove('active'));
+                activeDecade = decade;
+                this.classList.add('active');
+            }
+            applyAllFilters();
+        });
+    });
+
+    // --- TAG CLOUD ---
+    const tagElements = document.querySelectorAll('.tag');
+    tagElements.forEach(el => {
+        el.addEventListener('click', function() {
+            const tag = this.dataset.tag;
+            if (activeTag === tag) {
+                activeTag = null;
+                this.classList.remove('active');
+            } else {
+                tagElements.forEach(t => t.classList.remove('active'));
+                activeTag = tag;
+                this.classList.add('active');
+            }
+            applyAllFilters();
+        });
+    });
+
+    // --- GENRE FILTER ---
     const filterButtons = document.querySelectorAll('.filter-btn');
     const cards = document.querySelectorAll('.card');
 
@@ -486,27 +687,134 @@
         button.addEventListener('click', function() {
             filterButtons.forEach(btn => btn.classList.remove('active'));
             this.classList.add('active');
-            filterCards(this.dataset.genre);
+            activeGenre = this.dataset.genre;
+            applyAllFilters();
             if (modal.classList.contains('open')) closeModal();
         });
     });
 
-    function filterCards(genre) {
-        const search = document.getElementById('searchInput').value.toLowerCase();
-        cards.forEach(card => {
-            const cardGenre = card.dataset.genre;
-            const cardSearch = card.dataset.search;
-            const matchesGenre = genre === 'all' || cardGenre === genre;
-            const matchesSearch = cardSearch.includes(search);
-            card.style.display = (matchesGenre && matchesSearch) ? 'block' : 'none';
-        });
-    }
-
+    // --- SEARCH ---
     document.getElementById('searchInput').addEventListener('keyup', function() {
-        const activeGenre = document.querySelector('.filter-btn.active').dataset.genre;
-        filterCards(activeGenre);
+        applyAllFilters();
         if (modal.classList.contains('open')) closeModal();
     });
+
+// --- UPDATE TAG CLOUD BASED ON VISIBLE CARDS ---
+function updateTagCloud() {
+    const visibleCards = document.querySelectorAll('.card[style*="display: block"]');
+    const tagCounts = {};
+    
+    visibleCards.forEach(card => {
+        const tags = card.dataset.tags || '';
+        if (tags) {
+            tags.split(',').forEach(tag => {
+                tag = tag.trim();
+                if (tag) {
+                    tagCounts[tag] = (tagCounts[tag] || 0) + 1;
+                }
+            });
+        }
+    });
+    
+    const tagCloud = document.getElementById('tagCloud');
+    if (!tagCloud) return;
+    
+    // Clear current cloud
+    tagCloud.innerHTML = '';
+    
+    // Get max count for sizing
+    const maxCount = Math.max(...Object.values(tagCounts), 1);
+    
+    // Sort tags alphabetically
+    const sortedTags = Object.keys(tagCounts).sort();
+    
+    if (sortedTags.length === 0) {
+        tagCloud.innerHTML = '<span style="color: #b0a392; font-size: 0.9rem;">No tags match current filters</span>';
+        return;
+    }
+    
+    sortedTags.forEach(tag => {
+        const count = tagCounts[tag];
+        const size = 0.7 + (count / maxCount) * 0.7;
+        const span = document.createElement('span');
+        span.className = 'tag';
+        span.dataset.tag = tag;
+        span.style.fontSize = size + 'rem';
+        span.textContent = tag + ' (' + count + ')';
+        
+        // Add click handler for filtering by tag
+        span.addEventListener('click', function() {
+            const tag = this.dataset.tag;
+            if (activeTag === tag) {
+                activeTag = null;
+                this.classList.remove('active');
+            } else {
+                document.querySelectorAll('.tag').forEach(t => t.classList.remove('active'));
+                activeTag = tag;
+                this.classList.add('active');
+            }
+            applyAllFilters();
+        });
+        
+        // Preserve active state if this tag is currently active
+        if (activeTag === tag) {
+            span.classList.add('active');
+        }
+        
+        tagCloud.appendChild(span);
+    });
+}
+
+    // --- MASTER FILTER FUNCTION ---
+    function applyAllFilters() {
+    const search = document.getElementById('searchInput').value.toLowerCase();
+    cards.forEach(card => {
+        const cardGenre = card.dataset.genre;
+        const cardSearch = card.dataset.search;
+        const cardYear = parseInt(card.dataset.year) || null;
+        const cardTags = card.dataset.tags || '';
+
+        // Genre filter
+        const matchesGenre = activeGenre === 'all' || cardGenre === activeGenre;
+
+        // Search filter
+        const matchesSearch = cardSearch.includes(search);
+
+        // Decade filter
+        let matchesDecade = true;
+        if (activeDecade !== null) {
+            if (cardYear === null) {
+                matchesDecade = false;
+            } else {
+                matchesDecade = cardYear >= activeDecade && cardYear < activeDecade + 10;
+            }
+        }
+
+        // Tag filter
+        let matchesTag = true;
+        if (activeTag !== null) {
+            matchesTag = cardTags.includes(activeTag.toLowerCase());
+        }
+
+        const visible = matchesGenre && matchesSearch && matchesDecade && matchesTag;
+        card.style.display = visible ? 'block' : 'none';
+    });
+
+    // --- UPDATE TAG CLOUD AFTER FILTERING ---
+    updateTagCloud();
+}
+
+    // --- WINDOW RESIZE ---
+    window.addEventListener('resize', function() {
+        if (modal.classList.contains('open')) {
+            updateDimensions();
+            clampPosition();
+            updateTransform();
+        }
+    });
+
+    // Initialize
+    applyAllFilters();
 </script>
 </body>
 </html>
