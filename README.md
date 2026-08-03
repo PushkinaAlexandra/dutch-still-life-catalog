@@ -1,35 +1,31 @@
-# 🖼️ Dutch Golden Age: Still Life Explorer
+# Dutch Golden Age: Still Life Explorer
 
-**Live Demo:** [https://pushkinaalexandra.github.io/dutch-still-life-catalog/](https://pushkinaalexandra.github.io/dutch-still-life-catalog/)
+**Live Demo:** https://pushkinaalexandra.github.io/dutch-still-life-catalog/
 
-An interactive digital catalog of 12 Dutch Golden Age still life paintings from the Metropolitan Museum of Art. This project was developed as a portfolio piece to demonstrate skills in data processing, front-end development, and digital curation.
+An interactive digital catalog of 12 Dutch Golden Age still life paintings from the Metropolitan Museum of Art.
 
-## ✨ Features
-- **Genre Filtering:** Filter paintings by genre (Vanitas, Pronkstilleven, Flower Still Life, Sottobosco, Hunting/Gamepiece, Banketje).
-- **Search:** Real-time search by artist name or painting title.
-- **Modal View:** Click on any painting to open a detailed modal window.
-- **Zoom & Drag:** Zoom in (up to 4x) and drag the image to explore fine details and textures.
-- **Filter-Aware Navigation:** The arrows in the modal window cycle only through the currently filtered paintings.
+## Features
+- **Timeline** — filter paintings by decade (1600–1720)
+- **Dynamic Tag Cloud** — click on any symbol to filter; updates based on active filters
+- **Genre Filtering** — by Vanitas, Pronkstilleven, Flower Still Life, etc.
+- **Search** — by artist name or painting title
+- **Modal View** — click on any painting for a detailed view
+- **Zoom & Drag** — zoom in (up to 4×) and drag to explore fine details
 
-## 🛠️ Technologies Used
-- **Python:** Data processing and HTML generation from CSV.
-- **HTML5 & CSS3:** Responsive layout and styling.
-- **JavaScript:** Interactive features (filtering, search, modal, zoom, drag).
-- **GitHub Pages:** Hosting.
+## Technologies
+- Python (data processing, HTML generation)
+- HTML5 / CSS3 (responsive layout, animations)
+- JavaScript (filtering, timeline, tag cloud, modal, zoom, drag)
 
-## 📊 Data Source
-- **Metropolitan Museum of Art Open Access API:** Image links and metadata sourced from the Met's public collection.
+## Project Structure
+- `generator.py` — reads `data.csv` and generates `index.html`
+- `data.csv` — contains all painting metadata (Title, Artist, Date, Image URL, Description, Genre, Tags)
+- `index.html` — the final self-contained webpage
 
-## 📂 Project Structure
-- `generator.py`: Python script that reads `data.csv` and generates `index.html`.
-- `data.csv`: Contains all metadata for the 12 paintings (Title, Artist, Date, Image URL, Description, Genre).
-- `index.html`: The final, self-contained webpage ready for deployment.
+## Data Source
+Metropolitan Museum of Art Open Access API
 
-## 🚀 How to Run Locally
-1. Clone the repository.
-2. Ensure `data.csv` is in the same directory.
-3. Run `python generator.py`.
-4. Open `index.html` in your browser.
-
-## 📝 Author
-**Alexandra Pushkina** 
+## How to Run Locally
+1. Clone the repository
+2. Run `python generator.py`
+3. Open `index.html` in your browser
